@@ -24,7 +24,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   error = null,
   accept = '.pdf,.jpg,.jpeg,.png',
   maxSizeMB = 10,
-  documentType,
+  documentType: _documentType,
   documentTypeLabel,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);

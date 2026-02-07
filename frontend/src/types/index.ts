@@ -105,6 +105,7 @@ export interface Document {
   file_size: number;
   file_size_bytes?: number;
   uploaded_at: string;
+  uploaded_by?: string;
   verification_status?: 'PENDING' | 'VERIFIED' | 'REJECTED';
 }
 
@@ -153,6 +154,7 @@ export interface FundingUtility {
 }
 
 export interface CompletionBreakdown {
+  overallCompletion?: number;
   businessInfo: {
     weight: number;
     completed: boolean;
@@ -173,14 +175,25 @@ export interface CompletionBreakdown {
     completed: boolean;
     percentage: number;
   };
-  kycDirectors: {
+  directorKYC?: {
     weight: number;
     completed: boolean;
     percentage: number;
   };
-  itrDirectors: {
+  kycDirectors?: {
     weight: number;
     completed: boolean;
     percentage: number;
   };
+  directorITR?: {
+    weight: number;
+    completed: boolean;
+    percentage: number;
+  };
+  itrDirectors?: {
+    weight: number;
+    completed: boolean;
+    percentage: number;
+  };
+  nextSteps?: string[];
 }

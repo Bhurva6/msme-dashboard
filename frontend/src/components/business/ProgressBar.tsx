@@ -7,13 +7,18 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ completion }) => {
+  // Support both naming conventions
+  const directorKYC = completion.directorKYC || completion.kycDirectors;
+  const directorITR = completion.directorITR || completion.itrDirectors;
+  const overallCompletion = completion.overallCompletion || 0;
+
   const categories = [
     { key: 'businessInfo', label: 'Business Info', weight: completion.businessInfo.weight },
     { key: 'financials', label: 'Financial Documents (BS & P&L)', weight: completion.financials.weight },
     { key: 'sanctions', label: 'Sanction Letters', weight: completion.sanctions.weight },
     { key: 'businessProfile', label: 'Business Profile', weight: completion.businessProfile.weight },
-    { key: 'directorKYC', label: 'Director KYC', weight: completion.directorKYC.weight },
-    { key: 'directorITR', label: 'Director ITR', weight: completion.directorITR.weight },
+    { key: 'directorKYC', label: 'Director KYC', weight: directorKYC?.weight || 0 },
+    { key: 'directorITR', label: 'Director ITR', weight: directorITR?.weight || 0 },
   ];
 
   const getStatusIcon = (completed: boolean) => {
@@ -125,8 +130,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ completion }) => {
         <div className="border-t pt-4">
           <h4 className="text-sm font-semibold text-gray-700 mb-2">Next Steps</h4>
           <ul className="space-y-2">
-            {completion.nextSteps.map((step, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm text-gray-600">
+            {completion.nextSteps.map((step: string, index: number) => (
+              <li key={`step-${index}`} className="flex items-start gap-2 text-sm text-gray-600">
                 <span className="text-blue-500 font-semibold">{index + 1}.</span>
                 <span>{step}</span>
               </li>
