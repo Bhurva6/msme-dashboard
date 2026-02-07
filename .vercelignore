@@ -1,0 +1,13 @@
+node_modules
+.env
+.env.local
+*.log
+.DS_Store
+backend/
+database/
+*.md
+!README.md
+setup-docker.sh
+docker-compose.yml
+.dockerignore
+uploads/
