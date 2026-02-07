@@ -1,7 +1,6 @@
 import React from 'react';
 import { Document } from '@/types';
 import { FileText, Download, Trash2, CheckCircle2, Clock } from 'lucide-react';
-import { Button } from '@/components/common/Button';
 
 interface DocumentTileProps {
   document: Document;
@@ -57,12 +56,12 @@ const DocumentTile: React.FC<DocumentTileProps> = ({
           <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
             <span>{formatFileSize(document.file_size)}</span>
             <span>•</span>
-            <span>{formatDate(document.created_at)}</span>
+            <span>{formatDate(document.created_at || document.uploaded_at)}</span>
           </div>
           
           {/* Status Badge */}
           <div className="mt-2">
-            {document.status === 'VERIFIED' ? (
+            {(document.status || document.verification_status) === 'VERIFIED' ? (
               <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">
                 <CheckCircle2 className="w-3 h-3" />
                 Verified

@@ -16,7 +16,6 @@ export const SignupForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<SignupData>();
 
   const onSubmit = async (data: SignupData) => {

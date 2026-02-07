@@ -72,6 +72,7 @@ export interface Business {
   pan?: string;
   gstin?: string;
   udyam?: string;
+  udyam_registration?: string;
   sector: string;
   city: string;
   state: string;
@@ -106,6 +107,8 @@ export interface Document {
   file_size_bytes?: number;
   uploaded_at: string;
   uploaded_by?: string;
+  created_at?: string;
+  status?: 'PENDING' | 'VERIFIED' | 'REJECTED';
   verification_status?: 'PENDING' | 'VERIFIED' | 'REJECTED';
 }
 

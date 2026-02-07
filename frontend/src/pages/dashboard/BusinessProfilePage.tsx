@@ -89,23 +89,23 @@ const ProfilePage: React.FC = () => {
         id: 'doc-1',
         document_group_id: 'grp-1',
         file_name: 'Balance_Sheet_2023.pdf',
+        file_url: '/uploads/balance_sheet_2023.pdf',
         file_path: '/uploads/balance_sheet_2023.pdf',
         file_size: 2048576,
         mime_type: 'application/pdf',
         uploaded_by: 'demo-user-id',
-        created_at: '2024-01-25T14:30:00Z',
-        updated_at: '2024-01-25T14:30:00Z',
+        uploaded_at: '2024-01-25T14:30:00Z',
       },
       {
         id: 'doc-2',
         document_group_id: 'grp-1',
         file_name: 'PnL_Statement_2023.pdf',
+        file_url: '/uploads/pnl_2023.pdf',
         file_path: '/uploads/pnl_2023.pdf',
         file_size: 1536789,
         mime_type: 'application/pdf',
         uploaded_by: 'demo-user-id',
-        created_at: '2024-01-26T10:15:00Z',
-        updated_at: '2024-01-26T10:15:00Z',
+        uploaded_at: '2024-01-26T10:15:00Z',
       },
     ]);
   }, []);
@@ -178,12 +178,12 @@ const ProfilePage: React.FC = () => {
         id: `doc-${Date.now()}`,
         document_group_id: selectedDocType,
         file_name: selectedFile.name,
+        file_url: `/uploads/${selectedFile.name}`,
         file_path: `/uploads/${selectedFile.name}`,
         file_size: selectedFile.size,
         mime_type: selectedFile.type,
         uploaded_by: 'demo-user-id',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        uploaded_at: new Date().toISOString(),
       };
       setDocuments([...documents, newDoc]);
       setShowFileUpload(false);

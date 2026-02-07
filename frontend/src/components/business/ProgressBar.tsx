@@ -7,18 +7,18 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ completion }) => {
-  // Support both naming conventions
-  const directorKYC = completion.directorKYC || completion.kycDirectors;
-  const directorITR = completion.directorITR || completion.itrDirectors;
-  const overallCompletion = completion.overallCompletion || 0;
+  // Support both naming conventions - ensure defaults
+  const directorKYC = completion.directorKYC || completion.kycDirectors || 0;
+  const directorITR = completion.directorITR || completion.itrDirectors || 0;
+  const overallCompletion = completion.overallCompletion ?? 0;
 
   const categories = [
     { key: 'businessInfo', label: 'Business Info', weight: completion.businessInfo.weight },
     { key: 'financials', label: 'Financial Documents (BS & P&L)', weight: completion.financials.weight },
     { key: 'sanctions', label: 'Sanction Letters', weight: completion.sanctions.weight },
     { key: 'businessProfile', label: 'Business Profile', weight: completion.businessProfile.weight },
-    { key: 'directorKYC', label: 'Director KYC', weight: directorKYC?.weight || 0 },
-    { key: 'directorITR', label: 'Director ITR', weight: directorITR?.weight || 0 },
+    { key: 'directorKYC', label: 'Director KYC', weight: typeof directorKYC === 'object' ? directorKYC.weight : 0 },
+    { key: 'directorITR', label: 'Director ITR', weight: typeof directorITR === 'object' ? directorITR.weight : 0 },
   ];
 
   const getStatusIcon = (completed: boolean) => {
