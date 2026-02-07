@@ -57,9 +57,11 @@ export const useBusiness = () => {
     setError(null);
     try {
       const data = await businessApi.createBusiness(businessData);
-      setBusiness(data.business);
-      setDocumentGroups(data.documentGroups);
-      updateCompletion(data.business.profile_completion_percent);
+      const businessResult = (data as any).business || data;
+      const groups = (data as any).documentGroups || [];
+      setBusiness(businessResult);
+      setDocumentGroups(groups);
+      updateCompletion(businessResult.profile_completion_percent || 0);
       return data;
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to create business profile';
@@ -76,8 +78,9 @@ export const useBusiness = () => {
     setError(null);
     try {
       const data = await businessApi.updateBusiness(businessId, updates);
-      setBusiness(data.business);
-      updateCompletion(data.business.profile_completion_percent);
+      const businessResult = (data as any).business || data;
+      setBusiness(businessResult);
+      updateCompletion(businessResult.profile_completion_percent || 0);
       return data;
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to update business profile';
@@ -130,8 +133,10 @@ export const useBusiness = () => {
     setError(null);
     try {
       const data = await businessApi.addDirector(directorData);
-      addDirector(data.director);
-      updateCompletion(data.newCompletion);
+      const directorResult = (data as any).director || data;
+      const newCompletion = (data as any).newCompletion;
+      addDirector(directorResult);
+      if (newCompletion !== undefined) updateCompletion(newCompletion);
       return data;
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to add director';
@@ -148,8 +153,10 @@ export const useBusiness = () => {
     setError(null);
     try {
       const data = await businessApi.updateDirector(directorId, updates);
-      updateDirectorStore(directorId, data.director);
-      updateCompletion(data.newCompletion);
+      const directorResult = (data as any).director || data;
+      const newCompletion = (data as any).newCompletion;
+      updateDirectorStore(directorId, directorResult);
+      if (newCompletion !== undefined) updateCompletion(newCompletion);
       return data;
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to update director';
@@ -166,8 +173,9 @@ export const useBusiness = () => {
     setError(null);
     try {
       const data = await businessApi.deleteDirector(directorId);
+      const newCompletion = (data as any)?.newCompletion;
       removeDirector(directorId);
-      updateCompletion(data.newCompletion);
+      if (newCompletion !== undefined) updateCompletion(newCompletion);
       return data;
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to delete director';
@@ -184,7 +192,8 @@ export const useBusiness = () => {
     setError(null);
     try {
       const data = await businessApi.createFundingUtility(utilityData);
-      addFundingUtility(data.utility);
+      const utilityResult = (data as any).utility || data;
+      addFundingUtility(utilityResult);
       return data;
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to create funding utility';
@@ -201,7 +210,8 @@ export const useBusiness = () => {
     setError(null);
     try {
       const data = await businessApi.updateFundingUtility(utilityId, updates);
-      updateUtilityStore(utilityId, data.utility);
+      const utilityResult = (data as any).utility || data;
+      updateUtilityStore(utilityId, utilityResult);
       return data;
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to update funding utility';

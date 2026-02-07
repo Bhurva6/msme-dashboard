@@ -7,7 +7,7 @@ import DocumentTile from '@/components/business/DocumentTile';
 import FileUploader from '@/components/business/FileUploader';
 import { Button } from '@/components/common/Button';
 import { Toast } from '@/components/common/Toast';
-import { Business, Director, Document, CompletionBreakdown } from '@/types';
+import { Business, Director, Document } from '@/types';
 import { Building2, FileText, Users, Rocket, Plus, Edit2, Trash2 } from 'lucide-react';
 
 const ProfilePage: React.FC = () => {
