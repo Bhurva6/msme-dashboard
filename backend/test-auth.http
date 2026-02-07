@@ -1,0 +1,160 @@
+### MSME Funding Platform - Authentication API Tests
+### Use REST Client extension in VS Code to run these tests
+
+@baseUrl = http://localhost:5000/api/v1
+@token = YOUR_TOKEN_HERE
+
+### Health Check
+GET http://localhost:5000/api/health
+
+###
+### ============================================
+### 1. SIGNUP - Send OTP
+### ============================================
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "phone": "9876543210",
+  "email": "john@example.com"
+}
+
+###
+### ============================================
+### 2. VERIFY OTP - Create Account
+### Note: Check server console for OTP
+### ============================================
+POST {{baseUrl}}/auth/verify-otp
+Content-Type: application/json
+
+{
+  "phone": "9876543210",
+  "otp": "123456",
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+
+###
+### ============================================
+### 3. RESEND OTP
+### ============================================
+POST {{baseUrl}}/auth/resend-otp
+Content-Type: application/json
+
+{
+  "phone": "9876543210"
+}
+
+###
+### ============================================
+### 4. SET PASSWORD (Authenticated)
+### Note: Replace token with actual JWT from verify-otp or login
+### ============================================
+POST {{baseUrl}}/auth/set-password
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "password": "Password123"
+}
+
+###
+### ============================================
+### 5. LOGIN WITH EMAIL
+### ============================================
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "Password123"
+}
+
+###
+### ============================================
+### 6. GET CURRENT USER (Authenticated)
+### ============================================
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+###
+### ============================================
+### ERROR SCENARIOS
+### ============================================
+
+### Invalid phone format
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "phone": "123456",
+  "email": "test@example.com"
+}
+
+###
+### Missing required fields
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "phone": "9876543210"
+}
+
+###
+### Invalid email format
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "phone": "9876543210",
+  "email": "invalid-email"
+}
+
+###
+### Wrong OTP
+POST {{baseUrl}}/auth/verify-otp
+Content-Type: application/json
+
+{
+  "phone": "9876543210",
+  "otp": "000000",
+  "name": "John Doe"
+}
+
+###
+### Weak password
+POST {{baseUrl}}/auth/set-password
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "password": "weak"
+}
+
+###
+### Login with wrong password
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "WrongPassword123"
+}
+
+###
+### Unauthorized access (no token)
+GET {{baseUrl}}/auth/me
+
+###
+### Duplicate phone signup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Another User",
+  "phone": "9876543210",
+  "email": "another@example.com"
+}
