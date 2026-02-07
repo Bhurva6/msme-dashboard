@@ -50,20 +50,20 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ completion }) => {
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-semibold text-gray-900">Profile Completion</h3>
           <span className="text-2xl font-bold text-blue-600">
-            {completion.overallCompletion}%
+            {overallCompletion}%
           </span>
         </div>
         
         <div className="w-full bg-gray-200 rounded-full h-4 mb-2">
           <div
-            className={`h-4 rounded-full transition-all duration-500 ${getStatusColor(completion.overallCompletion)}`}
-            style={{ width: `${completion.overallCompletion}%` }}
+            className={`h-4 rounded-full transition-all duration-500 ${getStatusColor(overallCompletion)}`}
+            style={{ width: `${overallCompletion}%` }}
           />
         </div>
 
-        <p className="text-sm text-gray-600">{getStatusMessage(completion.overallCompletion)}</p>
+        <p className="text-sm text-gray-600">{getStatusMessage(overallCompletion)}</p>
 
-        {completion.overallCompletion >= 70 && (
+        {overallCompletion >= 70 && (
           <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-start gap-2">
             <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
             <div>
@@ -77,12 +77,12 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ completion }) => {
           </div>
         )}
 
-        {completion.overallCompletion > 0 && completion.overallCompletion < 70 && (
+        {overallCompletion > 0 && overallCompletion < 70 && (
           <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-2">
             <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
             <div>
               <p className="text-sm font-medium text-yellow-800">
-                Complete {70 - completion.overallCompletion}% more to unlock funding options
+                Complete {70 - overallCompletion}% more to unlock funding options
               </p>
               <p className="text-xs text-yellow-700 mt-1">
                 Follow the checklist below to complete your profile.
