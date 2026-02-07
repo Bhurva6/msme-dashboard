@@ -34,6 +34,33 @@ export const LoginForm: React.FC = () => {
     setError('');
 
     try {
+      // Check if demo credentials are being used (mock login)
+      if (data.email === 'demo@msme.com' && data.password === 'Demo@123') {
+        // Mock successful login
+        const mockUser: User = {
+          id: 'demo-user-123',
+          name: 'Demo User',
+          email: 'demo@msme.com',
+          phone: '9876543210',
+          role: 'owner',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        
+        const mockToken = 'demo-jwt-token-' + Date.now();
+        
+        // Store in authStore
+        login(mockToken, mockUser);
+        
+        // Navigate to dashboard
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 500);
+        
+        return;
+      }
+
+      // Try API login (will fail if backend not available)
       const response = await axiosInstance.post<ApiResponse<{ token: string; user: User }>>('/auth/login', data);
 
       if (response.data.success && response.data.data) {
@@ -42,7 +69,12 @@ export const LoginForm: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (err: any) {
-      setError(err.message || 'Invalid credentials. Please try again.');
+      // If it's a network error and not demo credentials, show helpful message
+      if (err.message?.includes('Network Error') || err.code === 'ERR_CONNECTION_REFUSED') {
+        setError('Backend API not available. Try demo credentials: demo@msme.com / Demo@123');
+      } else {
+        setError(err.message || 'Invalid credentials. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
