@@ -10,22 +10,38 @@ import { ProfilePage } from './pages/dashboard/ProfilePage';
 import BusinessSetupPage from './pages/business/BusinessSetupPage';
 import BusinessProfilePage from './pages/dashboard/BusinessProfilePage';
 import FundingOptionsPage from './pages/funding/FundingOptionsPage';
+import OnboardingPage from './pages/onboarding/OnboardingPage';
+import OnboardingQuestionsPage from './pages/onboarding/OnboardingQuestionsPage';
+import SchemesPage from './pages/onboarding/SchemesPage';
 import { useAuthStore } from './store/authStore';
 import { ToastMessage } from './types';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import LanguageLoader from './components/common/LanguageLoader';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+  
+  if (isAuthenticated) {
+    return <>{children}</>;
+  }
+  
+  return <Navigate to="/login" replace />;
 };
 
-// Public Only Route (redirect to dashboard if already logged in)
+// Public Only Route (redirect to onboarding if already logged in, to allow demo flow)
 const PublicOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuthStore();
-  return !isAuthenticated ? <>{children}</> : <Navigate to="/dashboard" replace />;
+  
+  if (isAuthenticated) {
+    return <Navigate to="/onboarding" replace />;
+  }
+  
+  return <>{children}</>;
 };
 
-function App() {
+const AppContent: React.FC = () => {
+  const { isChangingLanguage } = useLanguage();
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   const addToast = (message: string, type: ToastMessage['type']) => {
@@ -38,7 +54,12 @@ function App() {
   };
 
   // Make addToast available globally (optional)
-  (window as any).addToast = addToast;
+  (globalThis as any).addToast = addToast;
+
+  // Show language loader when changing language
+  if (isChangingLanguage) {
+    return <LanguageLoader />;
+  }
 
   return (
     <Router>
@@ -67,6 +88,32 @@ function App() {
               }
             />
             <Route path="/verify-otp" element={<OTPVerificationPage />} />
+            
+            {/* Onboarding Routes - Protected */}
+            <Route
+              path="/onboarding"
+              element={
+                <ProtectedRoute>
+                  <OnboardingPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/onboarding/questions"
+              element={
+                <ProtectedRoute>
+                  <OnboardingQuestionsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/onboarding/schemes"
+              element={
+                <ProtectedRoute>
+                  <SchemesPage />
+                </ProtectedRoute>
+              }
+            />
             
             {/* Protected Routes */}
             <Route
@@ -111,6 +158,14 @@ function App() {
         <ToastContainer toasts={toasts} removeToast={removeToast} />
       </div>
     </Router>
+  );
+};
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

@@ -85,7 +85,8 @@ export const OTPVerification: React.FC = () => {
         sessionStorage.removeItem('signupName');
         sessionStorage.removeItem('signupEmail');
 
-        navigate('/dashboard');
+        // Redirect to onboarding for new users
+        navigate('/onboarding');
       }
     } catch (err: any) {
       setError(err.message || 'Invalid OTP. Please try again.');
